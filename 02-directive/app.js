@@ -17,7 +17,8 @@ const app = Vue.createApp({
 
         <ul>
             <li v-for="quote in quotes">
-                author
+                <span>{{ quote.quote }}</span>
+                <blockquote> -{{ quote.author }} </blockquote>
             </li>
         </ul>
     `,
