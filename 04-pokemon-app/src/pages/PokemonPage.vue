@@ -4,7 +4,7 @@
         <h1>¿Quién es este pokémon?</h1>
     
         <PokemonPicture :pokemonId="pokemon" :showPokemon="showPokemon" />
-        <PokemonOptions :pokemons="pokemonArr"/>
+        <PokemonOptions :pokemons="pokemonArr" @selectedPokemon="checkAnswer"/>
     </div>
 </template>
 
@@ -19,7 +19,7 @@
         data () {
             return {
                 pokemonArr: [],
-                showPokemon: true,
+                showPokemon: false,
                 pokemon: null
             }
         },
@@ -33,6 +33,9 @@
 
                 const rndInt = Math.floor(Math.random() * 4)
                 this.pokemon = this.pokemonArr[rndInt].id;
+            },
+            checkAnswer ( pokemonId ) {
+                this.showPokemon = pokemonId == this.pokemon;
             }
         },
         mounted () {
