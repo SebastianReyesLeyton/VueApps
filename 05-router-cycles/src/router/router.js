@@ -2,16 +2,22 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
     { 
-        path: '/', 
+        path: '/',
+        redirect: '/home'
+    },
+    { 
+        path: '/home',
+        name: 'home',
         component: () => import(/* webpackChunkName: "ListPage" */ '@/modules/pokemon/pages/ListPage') 
     },
     { 
-        path: '/about', 
+        path: '/about',
+        name: 'pokemon-about',
         component: () => import(/* webpackChunkName: "AboutPage" */ '@/modules/pokemon/pages/AboutPage')
     },
     { 
         name: 'pokemon-id',
-        path: '/:pokemonId', 
+        path: '/pokemonId/:pokemonId', 
         component: () => import(/* webpackChunkName: "PokemonPage" */ '@/modules/pokemon/pages/PokemonPage'),
         props: ( route ) => {
             const { pokemonId } = route.params
