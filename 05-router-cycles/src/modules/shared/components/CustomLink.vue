@@ -7,7 +7,7 @@
     >{{ link.name }}</a>
     <router-link
         v-else
-        :to="link.to"
+        :to="route"
         v-slot="{ href, isActive }"
     >
         <a 
@@ -28,6 +28,10 @@
         computed: {
             isExternalLink () {
                 return this.link.to.startsWith('http');
+            },
+            route () {
+                return this.link.params === undefined
+                       ? { name: this.link.to } : { name: this.link.to, params: this.link.params }
             }
         }
     }
