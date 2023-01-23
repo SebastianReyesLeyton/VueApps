@@ -9,10 +9,17 @@
 <script>
     export default {
         name: 'Counter',
-        props: ['title'],
+        props: {
+            title: String,
+            start: {
+                type: Number,
+                // required: true,
+                default: 100
+            }
+        },
         data () {
             return {
-                counter: 5
+                counter: this.start
             }
         },
         methods: {
