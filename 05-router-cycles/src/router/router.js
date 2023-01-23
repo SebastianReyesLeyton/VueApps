@@ -11,7 +11,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "ListPage" */ '@/modules/pokemon/pages/ListPage') 
     },
     { 
-        path: '/about',
+        path: '/pokemonAbout',
         name: 'pokemon-about',
         component: () => import(/* webpackChunkName: "AboutPage" */ '@/modules/pokemon/pages/AboutPage')
     },
