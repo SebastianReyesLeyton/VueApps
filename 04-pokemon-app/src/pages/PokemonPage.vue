@@ -57,7 +57,6 @@
             }
         },
         mounted () {
-            console.log('mounted');
             this.mixPokemonArray();
         }
     }
