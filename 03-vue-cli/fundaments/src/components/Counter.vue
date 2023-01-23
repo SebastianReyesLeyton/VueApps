@@ -13,8 +13,11 @@
             title: String,
             start: {
                 type: Number,
+                default: 100,
+                validator ( value ) {
+                    return value > 100
+                }
                 // required: true,
-                default: 100
             }
         },
         data () {
