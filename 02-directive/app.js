@@ -25,7 +25,8 @@ const app = Vue.createApp({
         <ul>
             <li v-for="({ quote, author }, index) in quotes">
                 <span>{{ index + 1 }} - {{ quote }}</span>
-                <blockquote> -{{ author }} </blockquote>
+                <blockquote v-if="author"> -{{ author }} </blockquote>
+                <blockquote v-show="author"> -{{ author }} </blockquote>
             </li>
         </ul>
     `,
@@ -38,8 +39,7 @@ const app = Vue.createApp({
             console.log(this.quotes);
 
             this.quotes.unshift({
-                quote: this.newQuote,
-                author: 'Juan Sebastian Reyes Leyton'
+                quote: this.newQuote
             });
         }
     }
