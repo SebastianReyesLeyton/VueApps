@@ -13,6 +13,13 @@ const quotes = [
 
 const app = Vue.createApp({
     template: `
+
+        <h1> {{ newQuote }} </h1>
+
+        <input type="text" v-model="newQuote" v-on:keypress.enter="addQuote" />
+
+        <hr>
+
         <h1> Batman quotes </h1>
 
         <ul>
@@ -23,8 +30,19 @@ const app = Vue.createApp({
         </ul>
     `,
     data: () => ({
-        quotes
-    })
+        quotes: quotes,
+        newQuote: 'Hola mundo'
+    }),
+    methods: {
+        addQuote () {
+            console.log(this.quotes);
+
+            this.quotes.unshift({
+                quote: this.newQuote,
+                author: 'Juan Sebastian Reyes Leyton'
+            });
+        }
+    }
 });
 
 app.mount('#myApp');
