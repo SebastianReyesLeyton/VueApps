@@ -5,7 +5,7 @@
     <h1>Map state</h1>
 
     <h2>Map state: {{ count }}</h2>
-    <h2>Square counter: {{ $store.getters.squareCount }}</h2>
+    <h2>Square counter: {{ $store.getters['counter/squareCount'] }}</h2>
     <h2>Last mutation: {{ lastMutation }}</h2>
 
     <h1>Actions</h1>
