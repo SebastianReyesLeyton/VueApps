@@ -1,9 +1,9 @@
 <template>
     <div class="entry-title d-flex justify-content-between p-2">
         <div>
-            <span class="text-success fs-3 fw-bold">15</span>
-            <span class="mx-1 fs-3">Julio</span>
-            <span class="mx-2 fs-4 fw-light">2021, jueves</span>
+            <span class="text-success fs-3 fw-bold">{{ day }}</span>
+            <span class="mx-1 fs-3">{{ month }}</span>
+            <span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
         </div>
 
         <div>
@@ -23,7 +23,7 @@
     <hr>
 
     <div class="d-flex flex-column px-3 h-75">
-        <textarea cols="30" rows="10" placeholder="¿Qué sucedió hoy?"></textarea>
+        <textarea cols="30" rows="10" placeholder="¿Qué sucedió hoy?" v-model="entry.text"></textarea>
     </div>
 
     <Fab icon="fa-save"/>
@@ -32,10 +32,55 @@
 
 <script>
     import { defineAsyncComponent } from 'vue';
+    import { mapGetters } from 'vuex';
+    import getDateMonthYear from '@/modules/daybook/helpers/getDateMonthYear';
 
     export default {
+        props: {
+            id: {
+                type: String, 
+                required: true
+            }
+        },
+
+        data () {
+            return {
+                entry: null
+            }
+        },  
+
         components: {
             Fab: defineAsyncComponent(() => import('@/modules/daybook/components/Fab.vue'))
+        },
+
+        methods: {
+            loadEntry () {
+                const entry = this.getEntriesById(this.id);
+                if ( !entry ) this.$router.push({ name: 'no-entry' })
+
+                this.entry = entry;
+            }
+        },
+
+        computed: {
+            day () {
+                const { day } = getDateMonthYear( this.entry.date );
+                return day;
+            },
+            month () {
+                const { month } = getDateMonthYear( this.entry.date );
+                return month;
+            },
+            yearDay () {
+                const { yearDay } = getDateMonthYear( this.entry.date );
+                return yearDay;
+            },
+            ...mapGetters('journal', ['getEntriesById'])
+        },  
+
+        created () {
+            console.log(this.id);
+            this.loadEntry();
         }
     }
 </script>
