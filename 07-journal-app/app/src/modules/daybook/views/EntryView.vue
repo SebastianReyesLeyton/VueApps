@@ -28,7 +28,10 @@
         </div>
     </template>
 
-    <Fab icon="fa-save"/>
+    <Fab 
+        icon="fa-save"
+        @on:click="saveEntry"
+    />
 
 </template>
 
@@ -61,6 +64,9 @@
                 if ( !entry ) return this.$router.push({ name: 'no-entry' })
 
                 this.entry = entry;
+            },
+            saveEntry () {
+                console.log('Guardando entrada');
             }
         },
 
