@@ -41,6 +41,7 @@
     import { defineAsyncComponent } from 'vue';
     import { mapGetters, mapActions } from 'vuex';
     import getDateMonthYear from '@/modules/daybook/helpers/getDateMonthYear';
+    import Swal from 'sweetalert2';
 
     export default {
         props: {
@@ -79,17 +80,50 @@
             },
             async saveEntry () {
 
+                new Swal({
+                    title: 'Espere por favor',
+                    allowOutsideClick: true
+                });
+                Swal.showLoading();
+
+                let message = '';
+
                 if ( this.entry.id ) {
                     await this.updateEntry( this.entry );
+                    message = "Entrada actualizada con éxito";
                 } else {
                     const id = await this.createEntry( this.entry );
                     this.$router.push({ name: 'entry', params: { id } })
+                    message = "Entrada registrada con éxito";
+                    
                 }
+                
+                Swal.fire('Guardado', message, 'success');
 
             },
             async onDeleteEntry () {
-                await this.deleteEntry( this.entry.id );
-                this.$router.push({ name: 'no-entry' });
+
+                const { isConfirmed } = await Swal.fire({
+                    title: '¿Está seguro?',
+                    text: 'Una vez borrado, no se puede recuperar',
+                    showDenyButton: true,
+                    confirmButtonText: 'Si, estoy seguro'
+                });
+
+                if ( isConfirmed ) {
+                    new Swal({
+                        title: 'Espere por favor',
+                        allowOutsideClick: false
+                    });
+
+                    Swal.showLoading();
+
+                    await this.deleteEntry( this.entry.id );
+                    this.$router.push({ name: 'no-entry' });
+
+                    Swal.fire('Eliminado', '', 'success');
+                }
+
             },
             ...mapActions('journal', ['updateEntry', 'createEntry', 'deleteEntry'])
         },
