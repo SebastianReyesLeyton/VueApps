@@ -14,10 +14,13 @@ export const setEntries = ( state, entries ) => {
 
 export const updateEntry = (state, entry) => {
     const idx = state.entries.findIndex( e => e.id == entry.id );
-    console.log(idx);
     state.entries[idx] = entry;
 }
 
 export const addEntry = (state, entry) => {
     state.entries = [entry, ...state.entries];
+}
+
+export const deleteEntry = (state, id) => {
+    state.entries = state.entries.filter( e => e.id != id );
 }
