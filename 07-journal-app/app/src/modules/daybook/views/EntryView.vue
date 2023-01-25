@@ -8,12 +8,15 @@
             </div>
     
             <div>
+
+                <input type="file" @change="onSelectedImage" ref="imageSelector" v-show="false">
+
                 <button v-if="entry.id" class="btn btn-danger mx-2" @click="onDeleteEntry">
                     Borrar
                     <i class="fa fa-trash-alt"></i>
                 </button>
     
-                <button class="btn btn-primary mx-2">
+                <button class="btn btn-primary mx-2" @click="onSelectImage">
                     Subir foto
                     <i class="fa fa-upload"></i>
                 </button>
@@ -33,7 +36,7 @@
         @on:click="saveEntry"
     />
 
-    <img src="https://www.cliffrailwaylynton.co.uk/wp-content/uploads/2018/01/250x250-Placeholder.png" alt="entry-picture" class="img-thumbnail">
+    <img v-if="localImage" :src="localImage" alt="entry-picture" class="img-thumbnail">
 
 </template>
 
@@ -53,7 +56,9 @@
 
         data () {
             return {
-                entry: null
+                entry: null,
+                localImage: null,
+                file: null
             }
         },  
 
@@ -124,6 +129,25 @@
                     Swal.fire('Eliminado', '', 'success');
                 }
 
+            },
+            onSelectedImage ( event ) {
+                const file = event.target.files[0];
+
+                console.log(file)
+
+                this.file = file;
+
+                if ( file ) {
+                    const fr = new FileReader();
+                    fr.onload = () => this.localImage = fr.result;
+                    fr.readAsDataURL( file );
+                } else {
+                    this.localImage = null;
+                }
+
+            },
+            onSelectImage () {
+                this.$refs.imageSelector.click();
             },
             ...mapActions('journal', ['updateEntry', 'createEntry', 'deleteEntry'])
         },
