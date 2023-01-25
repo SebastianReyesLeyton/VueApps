@@ -33,6 +33,8 @@
         @on:click="saveEntry"
     />
 
+    <img src="https://www.cliffrailwaylynton.co.uk/wp-content/uploads/2018/01/250x250-Placeholder.png" alt="entry-picture" class="img-thumbnail">
+
 </template>
 
 <script>
@@ -60,17 +62,32 @@
 
         methods: {
             loadEntry () {
-                const entry = this.getEntriesById(this.id);
-                if ( !entry ) return this.$router.push({ name: 'no-entry' })
+
+                let entry;
+                
+                if ( this.id === 'new' ) {
+                    entry = {
+                        text: '',
+                        date: new Date().toDateString()
+                    }
+                } else {
+                    entry = this.getEntriesById(this.id);
+                    if ( !entry ) return this.$router.push({ name: 'no-entry' })
+                }
 
                 this.entry = entry;
             },
             async saveEntry () {
-                console.log('Guardando entrada');
-                this.updateEntry( this.entry );
+
+                if ( this.entry.id ) {
+                    await this.updateEntry( this.entry );
+                } else {
+                    const id = await this.createEntry( this.entry );
+                    this.$router.push({ name: 'entry', params: { id } })
+                }
 
             },
-            ...mapActions('journal', ['updateEntry'])
+            ...mapActions('journal', ['updateEntry', 'createEntry'])
         },
 
         computed: {
@@ -90,7 +107,6 @@
         },  
 
         created () {
-            console.log(this.id);
             this.loadEntry();
         },
 
@@ -114,6 +130,13 @@
         }
     }
 
+    img {
+        width: 150px;
+        position: fixed;
+        bottom: 150px;
+        right: 20px;
+        box-shadow: 0px 5px 10px rgba($color: #000, $alpha: 0.2);
+    }
 
 
 </style>
